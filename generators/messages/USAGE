@@ -1,0 +1,1 @@
+./script/generate messages RENDERING_ENGINE(erb or haml)

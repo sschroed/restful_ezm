@@ -8,22 +8,22 @@ module MessagesHelper
   
   # Link to view the inbox
   def rezm_link_to_inbox
-    link_to "Inbox", inbox_user_messages_path
+    link_to "Inbox", inbox_messages_path
   end
   
   # Link to compose a message
   def rezm_link_to_create_message
-    link_to "Write", new_user_message_path
+    link_to "Write", new_message_path
   end
   
   # Link to view the outbox
   def rezm_link_to_outbox
-    link_to "Outbox", outbox_user_messages_path
+    link_to "Outbox", outbox_messages_path
   end
   
   # Link to view the trash bin
   def rezm_link_to_trash_bin
-    link_to "Trash", trashbin_user_messages_path
+    link_to "Trash", trashbin_messages_path
   end
   
   # Dynamic label for the sender/receiver column in the messages.rhtml view
@@ -43,7 +43,7 @@ module MessagesHelper
   
   # Link to view the message
   def rezm_link_to_message(message)
-     link_to "#{h(rezm_subject_and_status(message))}", user_message_path(rezm_user, message)
+     link_to "#{h(rezm_subject_and_status(message))}", message_path(message)
   end
   
   # Dynamic data for the sender/receiver column in the messages.rhtml view
@@ -84,11 +84,11 @@ module MessagesHelper
   
   # Reply Button
   def rezm_button_to_reply(message)
-    button_to "Reply", reply_user_message_path(rezm_user, message), :method => :get  
+    button_to "Reply", reply_message_path(message), :method => :get  
   end
   
   # Delete Button
   def rezm_button_to_delete(message)
-    button_to "Delete", user_message_path(rezm_user, message), :confirm => "Are you sure?", :method => :delete  
+    button_to "Delete", message_path(message), :confirm => "Are you sure?", :method => :delete  
   end
 end

@@ -7,7 +7,7 @@ class MessagesController < ApplicationController
 
   # GET /messages
   def index
-    redirect_to inbox_user_messages_url
+    redirect_to inbox_messages_url
   end
   
   # GET /messages/1
@@ -37,7 +37,7 @@ class MessagesController < ApplicationController
     respond_to do |format|
       if @message.save
         flash[:notice] = 'Message was sent successfully.'
-        format.html { redirect_to outbox_user_messages_path }
+        format.html { redirect_to outbox_messages_path }
       else
         format.html { render :action => "new" }
       end
@@ -68,11 +68,10 @@ class MessagesController < ApplicationController
   def inbox
     session[:mail_box] = "inbox"
     @messages = rezm_user.inbox_messages
-    
     respond_to do |format|
       format.html { render :action => "index" }
       format.xml  { render :xml    => @messages.to_xml }
-      format.atom { render :action => "index" }
+      format.atom { render :action => "index", :layout => false }
     end
   end
   
@@ -100,13 +99,14 @@ class MessagesController < ApplicationController
   
   # GET /messages/1/reply
   def reply
-    @message = Message.find_by_id(params[:id])
+    replied_message = Message.find(params[:id])
+    @message = Message.new
     
     respond_to do |format|
-      if can_view(@message)
-        @message.recipient = @message.sender_name
-        @message.subject = "Re: " + @message.subject 
-        @message.body = "\n\n___________________________\n" + @message.sender_name + " wrote:\n\n" + @message.body
+      if can_view(replied_message)
+        @message.recipient = replied_message.sender_name
+        @message.subject = "Re: " + replied_message.subject 
+        @message.body = "\n\n___________________________\n" + replied_message.sender_name + " wrote:\n\n" + replied_message.body
         format.html { render :action => "new" }
       else
         headers["Status"] = "Forbidden"
@@ -126,7 +126,7 @@ class MessagesController < ApplicationController
         end
         format.html { redirect_to current_mailbox }
       else
-        format.html { redirect_to inbox_user_messages_path }
+        format.html { redirect_to inbox_messages_path }
       end
     end
   end
@@ -142,13 +142,13 @@ class MessagesController < ApplicationController
   def current_mailbox
     case session[:mail_box]
     when "inbox"
-      inbox_user_messages_path
+      inbox_messages_path
     when "outbox"
-      outbox_user_messages_path
+      outbox_messages_path
     when "trashbin"
-      trashbin_user_messages_path
+      trashbin_messages_path
     else
-      inbox_user_messages_path
+      inbox_messages_path
     end
   end
   

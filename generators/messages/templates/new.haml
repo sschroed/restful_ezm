@@ -5,7 +5,7 @@
 = error_messages_for 'message'
 %fieldset
   %legend Send Message
-  - form_for :message, :url => user_messages_path do |form|
+  - form_for @message do |form|
     %p
       %label{ :for => "message_recepient" }Recipient:
       %br/

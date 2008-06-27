@@ -51,7 +51,8 @@ module ProtonMicro
                    :foreign_key => "sender_id",
                    :conditions => "sender_deleted IS NULL",
                    :order => "created_at DESC"
-                   
+          
+          # FIXME : true is not valid with sqlite3 (should be 't'). 
           has_many :trashbin_messages,  
                    :class_name => "Message", 
                    :foreign_key => "receiver_id",

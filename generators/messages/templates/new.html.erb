@@ -7,7 +7,7 @@
   <fieldset>
     <legend>Send Message</legend>
 
-    <% form_for :message, :url => user_messages_path do |form| %>
+    <% form_for @message do |form| %>
       <p>
         <label for="message_recepient" >Recipient:</label><br />
         <%= form.text_field :recipient, :size => 40, :value => @message.recipient %>
